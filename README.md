@@ -15,14 +15,14 @@ The project implements registration, logging into the system, as well as user pr
 
 ### Server Part
 
-To learn more about the server side, go to the documentation in the `server` folder:
+To learn more about the server side, go to the documentation(readme) in the `server` folder:
 
 ```bash
 cd server
 ```
 
 ### Client Part
-To learn more about the client side, go to the documentation in the client folder:
+To learn more about the client side, go to the documentation(readme) in the client folder:
 
 ```bash
 cd client
