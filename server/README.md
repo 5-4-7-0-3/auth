@@ -18,20 +18,22 @@ This project provides functionality for user registration and authorization, use
 
 ## Installation
 
- ```bash
- cd server
- npm install
- ```
+```bash
+cd server
+npm install
+```
 
 ## Launch of the Project
 1. Starting the Server in Development Mode
 
 ```bash
+npm run migration:run
 npm run start:dev
 ```
 2. Starting the Server in Production Mode
 
  ```bash
+npm run migration:run
 npm run build
 npm run start:prod
  ```
@@ -39,6 +41,9 @@ npm run start:prod
 ## Settings
  Creating an .env file from an .env.example file
 
+```bash
+cp .env.example .env
+```
 ## Migrations
 
 ```bash
