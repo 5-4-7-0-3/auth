@@ -66,3 +66,9 @@ Here is a list of the available routes of your API:
 
 - **GET** `/users/:id`
  - **Description**: Get user information by ID.
+
+## Contact
+
+- tg: https://t.me/vlad54703
+- mail: vlad.kovalov2000@gmai.com
+- linkedin: https://www.linkedin.com/in/vlad-kovalyov/
