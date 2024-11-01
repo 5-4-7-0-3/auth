@@ -1,25 +1,41 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 
 const Home: React.FC = () => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <h1 className="text-4xl font-bold mb-4">Welcome to MyApp!</h1>
-      <div className="flex space-x-4">
-        <Link
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="center"
+      minHeight="100vh"
+      bgcolor="grey.100"
+    >
+      <Typography variant="h3" component="h1" gutterBottom>
+        Welcome to MyApp!
+      </Typography>
+      <Box display="flex" gap={2}>
+        <Button
+          component={RouterLink}
           to="/register"
-          className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition"
+          variant="contained"
+          color="primary"
         >
           Sign up
-        </Link>
-        <Link
+        </Button>
+        <Button
+          component={RouterLink}
           to="/login"
-          className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition"
+          variant="contained"
+          color="primary"
         >
           Sign in
-        </Link>
-      </div>
-    </div>
+        </Button>
+      </Box>
+    </Box>
   );
 };
 

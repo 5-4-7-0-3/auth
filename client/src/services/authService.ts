@@ -1,5 +1,6 @@
 import { jwtDecode } from 'jwt-decode';
 import axiosInstance from './axiosInstance';
+import { UserProfile } from '../types';
 
 interface SignUpData {
   username: string;
@@ -19,12 +20,12 @@ interface JwtPayload {
   exp: number;
 }
 
-export const register = async (data: SignUpData) => {
+export const authRegister = async (data: SignUpData): Promise<UserProfile> => {
   const response = await axiosInstance.post('/auth/sign-up', data);
   return response.data;
 };
 
-export const login = async (data: SignInData) => {
+export const login = async (data: SignInData): Promise<UserProfile> => {
   const response = await axiosInstance.post('/auth/sign-in', data);
   const token = response.data.access_token;
   localStorage.setItem('token', token);
@@ -46,9 +47,4 @@ export const isAuthenticated = (): boolean => {
   } catch (error) {
     return false;
   }
-};
-
-export const getUserProfile = async () => {
-  const response = await axiosInstance.get('/auth/user');
-  return response.data;
 };

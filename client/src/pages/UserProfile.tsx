@@ -1,43 +1,67 @@
-import React, { useEffect, useState } from 'react';
-import { getUserProfile } from '../services/authService';
-import { useNavigate } from 'react-router-dom';
-import { UserProfile as UserProfileType } from '../types/index';
+import React, { useState, useEffect } from 'react';
+import { Box, CircularProgress, Typography } from '@mui/material';
+import useUserProfile from '../hooks/useUserProfile';
+import UserInfo from '../components/Profile/UserInfo';
+import UserAvatar from '../components/Profile/UserAvatar';
+import useAvatarUpload from '../hooks/useAvatarUpload';
+import UploadAvatarModal from '../components/Profile/UploadAvatarModal';
 
 const UserProfile: React.FC = () => {
-  const [user, setUser] = useState<UserProfileType | null>(null);
-  const navigate = useNavigate();
+  const { data: user, error, isLoading: isProfileLoading } = useUserProfile();
+  const {
+    handleUpload,
+    isLoading: isUploading,
+    error: uploadError,
+    success,
+    setSuccess,
+  } = useAvatarUpload();
+  const [isModalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const data = await getUserProfile();
-        setUser(data);
-      } catch (error: any) {
-        console.error(error);
-        navigate('/login');
-      }
-    };
+    if (success) {
+      setModalOpen(false);
+      setSuccess(false);
+    }
+  }, [success]);
 
-    fetchProfile();
-  }, [navigate]);
+  if (isProfileLoading || isUploading) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" mt={10}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error || uploadError) {
+    return (
+      <Typography color="error" variant="body1" align="center" mt={10}>
+        {error?.message || uploadError || 'Error loading profile'}
+      </Typography>
+    );
+  }
 
   if (!user) {
-    return <div className="text-center mt-10">Loading...</div>;
+    return (
+      <Typography color="error" variant="body1" align="center" mt={10}>
+        User not found
+      </Typography>
+    );
   }
 
   return (
-    <div className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md mt-10">
-      <h2 className="text-2xl font-semibold mb-6">User profile</h2>
-      <p className="mb-4">
-        <strong>ID:</strong> {user.id}
-      </p>
-      <p className="mb-4">
-        <strong>User name:</strong> {user.username}
-      </p>
-      <p className="mb-4">
-        <strong>Email:</strong> {user.email}
-      </p>
-    </div>
+    <Box display="flex" flexDirection="column" alignItems="center" mt={10}>
+      <UserAvatar
+        src={user.avatar}
+        alt={user.username}
+        onUpload={() => setModalOpen(true)}
+      />
+      <UserInfo user={user} />
+      <UploadAvatarModal
+        open={isModalOpen}
+        onClose={() => setModalOpen(false)}
+        onUpload={handleUpload}
+      />
+    </Box>
   );
 };
 

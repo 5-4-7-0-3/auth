@@ -1,71 +1,65 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { isAuthenticated, logout } from '../services/authService';
+import { Link as RouterLink } from 'react-router-dom';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import { useAuthLogout } from '../hooks/useAuthLogout';
 
 const Navbar: React.FC = () => {
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
+  const { isAuthenticated, handleLogout } = useAuthLogout();
 
   return (
-    <nav className="bg-indigo-600">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex items-center">
-            <Link to="/" className="text-white font-bold text-xl">
-              MyApp
-            </Link>
-          </div>
-          <div>
-            <ul className="items-center flex space-x-4">
-              {!isAuthenticated() && (
-                <>
-                  <li>
-                    <Link
-                      to="/login"
-                      className="text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium"
-                    >
-                      Sign in
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/register"
-                      className="text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium"
-                    >
-                      Sign up
-                    </Link>
-                  </li>
-                </>
-              )}
-              {isAuthenticated() && (
-                <>
-                  <li>
-                    <Link
-                      to="/profile"
-                      className="text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium"
-                    >
-                      Profile
-                    </Link>
-                  </li>
-                  <li>
-                    <button
-                      onClick={handleLogout}
-                      className="text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium"
-                    >
-                      Sign out
-                    </button>
-                  </li>
-                </>
-              )}
-            </ul>
-          </div>
-        </div>
-      </div>
-    </nav>
+    <AppBar position="static" sx={{ bgcolor: 'primary.main' }}>
+      <Toolbar>
+        <Typography
+          variant="h6"
+          component={RouterLink}
+          to="/"
+          sx={{ color: 'inherit', textDecoration: 'none', flexGrow: 1 }}
+        >
+          MyApp
+        </Typography>
+
+        <Box>
+          {!isAuthenticated ? (
+            <>
+              <Button
+                component={RouterLink}
+                to="/login"
+                color="inherit"
+                sx={{ mx: 1 }}
+              >
+                Sign in
+              </Button>
+              <Button
+                component={RouterLink}
+                to="/register"
+                color="inherit"
+                sx={{ mx: 1 }}
+              >
+                Sign up
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button
+                component={RouterLink}
+                to="/profile"
+                color="inherit"
+                sx={{ mx: 1 }}
+              >
+                Profile
+              </Button>
+              <Button onClick={handleLogout} color="inherit" sx={{ mx: 1 }}>
+                Sign out
+              </Button>
+            </>
+          )}
+        </Box>
+      </Toolbar>
+    </AppBar>
   );
 };
 
