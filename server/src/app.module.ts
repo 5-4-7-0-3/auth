@@ -1,8 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+import { AuthModule } from './module/auth/auth.module';
+import { UsersModule } from './module/users/users.module';
+import { FileUploadModule } from './module/upload/fileUpload.module';
 
 @Module({
   imports: [
@@ -10,6 +13,12 @@ import { UsersModule } from './users/users.module';
       isGlobal: true,
       envFilePath: '.env',
     }),
+
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..'),
+      serveStaticOptions: { index: false }
+    }),
+
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -25,6 +34,7 @@ import { UsersModule } from './users/users.module';
     }),
     AuthModule,
     UsersModule,
+    FileUploadModule
   ],
   controllers: [],
   providers: [],
